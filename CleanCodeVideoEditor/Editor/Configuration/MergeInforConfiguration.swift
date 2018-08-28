@@ -9,26 +9,23 @@
 import UIKit
 import AVKit
 
-protocol MergeVideoInfo {
+class MergeVideoInfo: NSObject {
   
-    var index:Int { get }
-    var image:UIImage?  { get }
-    var asset:AVAsset?  { get }
-    var isVideo : Bool  { get }
+    var index:Int?
+    var image:UIImage?
+    var asset:AVAsset?
+    var isVideo = false
     
 }
 
 
-protocol TextInfo {
-    var text: String { get }
-    var fontSize:CGFloat  { get }
-    var textColor: String { get }
-    var showTime:CGFloat  { get }
-    var endTime:CGFloat { get }
-    var textFrame: CGRect { get }
-}
-
-
-protocol SpiltVideoInfo {
+class TextInfo : NSObject {
     
+    var text: String!
+    var fontSize:CGFloat = 40
+    var textColor = UIColor.red
+    var showTime:CGFloat = 0
+    var endTime:CGFloat = 0
+    var textFrame = CGRect(x: 0, y: 0, width: 500, height: 500)
 }
+

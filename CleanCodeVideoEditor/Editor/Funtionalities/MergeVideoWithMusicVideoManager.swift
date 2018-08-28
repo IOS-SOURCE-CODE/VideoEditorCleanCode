@@ -12,6 +12,7 @@ import AVKit
 class MergeVideoWithMusic:  OutputVideoManagable, VideoCompositionInstruction  {
     
     func merge(video:AVAsset, withBackgroundMusic music:AVAsset, completion:@escaping VideoManagerCompletion) -> Void {
+        
         // Init composition
         let mixComposition = AVMutableComposition.init()
         

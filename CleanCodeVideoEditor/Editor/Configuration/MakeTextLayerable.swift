@@ -26,10 +26,11 @@ extension MakeTextLayerable {
         textLayer.alignmentMode = kCAAlignmentCenter
         textLayer.opacity = 0
         textLayer.frame = frame
+        textLayer.display()
         
         
         let fadeInAnimation = CABasicAnimation.init(keyPath: "opacity")
-        fadeInAnimation.duration = 0.5
+        fadeInAnimation.duration = 1
         fadeInAnimation.fromValue = NSNumber(value: 0)
         fadeInAnimation.toValue = NSNumber(value: 1)
         fadeInAnimation.isRemovedOnCompletion = false
