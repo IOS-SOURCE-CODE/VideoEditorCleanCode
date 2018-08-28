@@ -11,6 +11,8 @@ import AVKit
 
 
 class ViewController: UIViewController {
+    
+    let mergeManager = BaseVideoManager()
 
     fileprivate func mergeVideoImageText() {
         let urlVideo = Bundle.main.url(forResource: "movie1", withExtension: "mov")
@@ -34,9 +36,9 @@ class ViewController: UIViewController {
         
         
         
-        let merge = MergeVideoWithTextVideoManager()
         
-        merge.makeVideoFrom(data: [videoData, imageData], textData: [textData]) { (url, error) in
+        
+        mergeManager.merge(data: [videoData, imageData], textData: [textData]) { (url, error) in
             
             debugPrint(url)
             
@@ -46,10 +48,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        mergeVideoImageText()
+//        mergeVideoImageText()
 //        mergeTwoVideosToOneVideo()
         
-        
+        mergeVideoWithMusic()
     
     }
 
@@ -62,13 +64,35 @@ class ViewController: UIViewController {
         let avVideo1 = AVAsset(url: urlVideo1!)
         let avVideo2 = AVAsset(url: urlVideo2!)
         
-        let merge = MergeVideoToVideoManager()
-        merge.doMerge(arrayVideos:  [avVideo1, avVideo2], animation: true) { (url, error) in
+        
+        mergeManager.merge(arrayVideos:  [avVideo1, avVideo2], animation: true) { (url, error) in
             
               debugPrint(url)
         }
         
        
+    }
+    
+    
+    fileprivate func mergeVideoWithImage() {
+        
+        let urlVideo2 = Bundle.main.url(forResource: "movie2", withExtension: "mov")
+        let avVideo2 = AVAsset(url: urlVideo2!)
+        
+        
+    }
+    
+    fileprivate func mergeVideoWithMusic() {
+        
+        let urlVideo2 = Bundle.main.url(forResource: "movie2", withExtension: "mov")
+        let avVideo2 = AVAsset(url: urlVideo2!)
+        
+        let urlMusic = Bundle.main.url(forResource: "creativeminds", withExtension: "mp3")
+        let musicAsset = AVAsset(url: urlMusic!)
+        
+        mergeManager.merge(video: avVideo2, withBackgroundMusic: musicAsset) { (url, error) in
+            debugPrint(url)
+        }
     }
 
 

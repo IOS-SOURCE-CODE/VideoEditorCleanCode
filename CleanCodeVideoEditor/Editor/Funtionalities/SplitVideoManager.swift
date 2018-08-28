@@ -9,10 +9,16 @@
 import Foundation
 import AVKit
 
-class SplitVideoManager  {
+typealias SplitVideoManagerCompletion = (_ status: AVAssetExportSessionStatus, _ outputURL: URL) -> Void
+
+
+protocol SplitVideoManagerType {
+     func splitVideoByStartAndEndTime(videoAsset: MergeVideoInfo,startTime: Double, endTime: Double, outputURL: URL, completion: @escaping SplitVideoManagerCompletion)
+}
+
+class SplitVideoManager : SplitVideoManagerType {
     
-    typealias SplitVideoManagerCompletion = (_ status: AVAssetExportSessionStatus, _ outputURL: URL) -> Void
-    
+  
     func splitVideoByStartAndEndTime(videoAsset: MergeVideoInfo,startTime: Double = 0, endTime: Double, outputURL: URL, completion: @escaping SplitVideoManagerCompletion) {
        
         guard let duration = videoAsset.asset?.duration else { return }

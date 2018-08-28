@@ -9,7 +9,11 @@
 import Foundation
 import AVKit
 
-class MergeVideoWithMusic:  OutputVideoManagable, VideoCompositionInstruction  {
+protocol MergeVideoWithMusicVideoManagerType  {
+     func merge(video:AVAsset, withBackgroundMusic music:AVAsset, completion:@escaping VideoManagerCompletion) -> Void
+}
+
+class MergeVideoWithMusicVideoManager: MergeVideoWithMusicVideoManagerType, OutputVideoManagable, VideoCompositionInstruction {
     
     func merge(video:AVAsset, withBackgroundMusic music:AVAsset, completion:@escaping VideoManagerCompletion) -> Void {
         
@@ -67,7 +71,7 @@ class MergeVideoWithMusic:  OutputVideoManagable, VideoCompositionInstruction  {
         let path = NSTemporaryDirectory().appending("mergedVideoWithMusic.mp4")
         let exportURL = URL.init(fileURLWithPath: path)
         
-        exportMergeVideo(insertTime: insertTime, outputComposition: mixComposition, exportURL: exportURL, outSize: outputSize, arrayLayerInstruction: [layerInstruction], completion:completion )
+        exportMergeVideo(insertTime: duration, outputComposition: mixComposition, exportURL: exportURL, outSize: outputSize, arrayLayerInstruction: [layerInstruction], completion:completion )
         
     }
 }

@@ -9,11 +9,15 @@
 import Foundation
 import AVKit
 
-class MergeVideoToVideoManager : OutputVideoManagable, VideoCompositionInstruction {
+protocol MergeVideoToVideoManagerType  {
+    func merge(arrayVideos:[AVAsset], animation:Bool, completion:@escaping VideoManagerCompletion) -> Void
+}
+
+class MergeVideoToVideoManager:  MergeVideoToVideoManagerType,  OutputVideoManagable, VideoCompositionInstruction {
     
     let defaultSize = CGSize(width: 1920, height: 1080)
     
-    func doMerge(arrayVideos:[AVAsset], animation:Bool, completion:@escaping VideoManagerCompletion) -> Void {
+    func merge(arrayVideos:[AVAsset], animation:Bool, completion:@escaping VideoManagerCompletion) -> Void {
         
         var insertTime = kCMTimeZero
         var arrayLayerInstructions:[AVMutableVideoCompositionLayerInstruction] = []

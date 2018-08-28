@@ -9,13 +9,17 @@
 import Foundation
 import AVKit
 
+protocol MergeVideoWithTextVideoManagerType {
+    
+    func merge(data:[MergeVideoInfo], textData:[TextInfo]?, completion:@escaping VideoManagerCompletion) -> Void
+}
 
-class MergeVideoWithTextVideoManager : OutputVideoManagable, VideoCompositionInstruction, MakeTextLayerable {
+class MergeVideoWithTextVideoManager : MergeVideoWithTextVideoManagerType,  OutputVideoManagable, VideoCompositionInstruction, MakeTextLayerable {
     
     let defaultSize = CGSize(width: 1920, height: 1080) // Default video size
     var imageDuration = 5.0 // Duration of each image
     
-    func makeVideoFrom(data:[MergeVideoInfo], textData:[TextInfo]?, completion:@escaping VideoManagerCompletion) -> Void {
+    func merge(data:[MergeVideoInfo], textData:[TextInfo]?, completion:@escaping VideoManagerCompletion) -> Void {
 
         var outputSize = CGSize.init(width: 0, height: 0)
         var insertTime = kCMTimeZero
