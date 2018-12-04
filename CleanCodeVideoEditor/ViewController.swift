@@ -55,17 +55,19 @@ class ViewController: UIViewController {
         let musicAsset = AVAsset(url: urlMusic!)
 //         let playItem = AVPlayerItem(asset: musicAsset)
         
-        mplayer = AVAudioMixManager.customMixAudio(asset: musicAsset)
-        mplayer.isMuted = false
-        mplayer.play()
+//        mplayer = AVAudioMixManager.customMixAudio(asset: musicAsset)
+//        mplayer.isMuted = false
+//        mplayer.play()
         
+    
+//
 //        mplayer =  AVPlayer(playerItem: playItem)
 //        mplayer.isMuted = false
 //        mplayer.play()
 //
       
         
-
+        AVAudioMixManager.cusomRamValueMixAudio(asset: musicAsset)
     
     }
 

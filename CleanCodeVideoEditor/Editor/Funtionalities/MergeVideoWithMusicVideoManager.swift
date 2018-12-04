@@ -13,6 +13,8 @@ protocol MergeVideoWithMusicVideoManagerType  {
      func merge(video:AVAsset, withBackgroundMusic music:AVAsset, completion:@escaping VideoManagerCompletion) -> Void
 }
 
+
+
 class MergeVideoWithMusicVideoManager: MergeVideoWithMusicVideoManagerType, OutputVideoManagable, VideoCompositionInstruction {
     
     func merge(video:AVAsset, withBackgroundMusic music:AVAsset, completion:@escaping VideoManagerCompletion) -> Void {
