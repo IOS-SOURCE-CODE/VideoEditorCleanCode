@@ -13,6 +13,8 @@ import AVKit
 class ViewController: UIViewController {
     
     let mergeManager = BaseVideoManager()
+    
+    var mplayer: AVPlayer!
 
     fileprivate func mergeVideoImageText() {
         let urlVideo = Bundle.main.url(forResource: "movie1", withExtension: "mov")
@@ -28,17 +30,13 @@ class ViewController: UIViewController {
         
         let textData = TextInfo()
         textData.text = "HELLO WORLD"
-        textData.fontSize = 50
         textData.textColor = UIColor.blue
         textData.showTime = 3 // Second
         textData.endTime = 5 // Second
         textData.textFrame = CGRect(x: 0, y: 0, width: 400, height: 300)
         
         
-        
-        
-        
-        mergeManager.merge(data: [videoData, imageData], textData: [textData]) { (url, error) in
+        mergeManager.merge(data: [videoData, imageData], textData: nil) { (url, error) in
             
             debugPrint(url)
             
@@ -51,7 +49,23 @@ class ViewController: UIViewController {
 //        mergeVideoImageText()
 //        mergeTwoVideosToOneVideo()
         
-        mergeVideoWithMusic()
+//        mergeVideoWithMusic()
+        
+        let urlMusic = Bundle.main.url(forResource: "creativeminds", withExtension: "mp3")
+        let musicAsset = AVAsset(url: urlMusic!)
+//         let playItem = AVPlayerItem(asset: musicAsset)
+        
+        mplayer = AVAudioMixManager.customMixAudio(asset: musicAsset)
+        mplayer.isMuted = false
+        mplayer.play()
+        
+//        mplayer =  AVPlayer(playerItem: playItem)
+//        mplayer.isMuted = false
+//        mplayer.play()
+//
+      
+        
+
     
     }
 

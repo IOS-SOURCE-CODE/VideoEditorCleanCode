@@ -22,8 +22,8 @@ class MergeVideoInfo: NSObject {
 class TextInfo : NSObject {
     
     var text: String!
-    var fontSize:CGFloat = 40
-    var textColor = UIColor.red
+    var fontSize:CGFloat = 50
+    var textColor = UIColor.white
     var showTime:CGFloat = 0
     var endTime:CGFloat = 0
     var textFrame = CGRect(x: 0, y: 0, width: 500, height: 500)

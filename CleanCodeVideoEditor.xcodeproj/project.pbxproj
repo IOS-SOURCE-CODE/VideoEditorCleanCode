@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		71A53E6F21B658DA00D23315 /* AvAudioMixManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A53E6E21B658DA00D23315 /* AvAudioMixManager.swift */; };
 		71B600012133E879008BBEF5 /* silence.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 71B6FFFC2133E878008BBEF5 /* silence.mp3 */; };
 		71B600022133E879008BBEF5 /* creativeminds.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 71B6FFFD2133E878008BBEF5 /* creativeminds.mp3 */; };
 		71B600032133E879008BBEF5 /* movie2.mov in Resources */ = {isa = PBXBuildFile; fileRef = 71B6FFFE2133E878008BBEF5 /* movie2.mov */; };
@@ -31,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		71A53E6E21B658DA00D23315 /* AvAudioMixManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvAudioMixManager.swift; sourceTree = "<group>"; };
 		71B600002133E878008BBEF5 /* black.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = black.mov; sourceTree = "<group>"; };
 		71B6FFCA2133AF75008BBEF5 /* CleanCodeVideoEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanCodeVideoEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71B6FFCD2133AF75008BBEF5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				71B6FFE82133B92C008BBEF5 /* SplitVideoManager.swift */,
 				71B6FFEF2133D31E008BBEF5 /* MergeVideoToVideoManager.swift */,
 				71B6FFF32133D902008BBEF5 /* MergeVideoWithTextVideoManager.swift */,
+				71A53E6E21B658DA00D23315 /* AvAudioMixManager.swift */,
 			);
 			path = Funtionalities;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 				71B6FFF82133DA19008BBEF5 /* MakeTextLayerable.swift in Sources */,
 				71B6FFCE2133AF75008BBEF5 /* AppDelegate.swift in Sources */,
 				71B6FFE72133B23A008BBEF5 /* VideoCompositionInstruction.swift in Sources */,
+				71A53E6F21B658DA00D23315 /* AvAudioMixManager.swift in Sources */,
 				71B6FFF62133D9B2008BBEF5 /* CXETextLayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
