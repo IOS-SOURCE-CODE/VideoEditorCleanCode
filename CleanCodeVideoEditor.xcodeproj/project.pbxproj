@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		71A53E6F21B658DA00D23315 /* AvAudioMixManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A53E6E21B658DA00D23315 /* AvAudioMixManager.swift */; };
+		711CF72021B8D55A00621086 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711CF71F21B8D55A00621086 /* TestViewController.swift */; };
+		71635C8921B775DB008C85B0 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71635C8821B775DB008C85B0 /* PreviewViewController.swift */; };
+		71A53E6F21B658DA00D23315 /* AVAudioMixManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A53E6E21B658DA00D23315 /* AVAudioMixManager.swift */; };
 		71B600012133E879008BBEF5 /* silence.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 71B6FFFC2133E878008BBEF5 /* silence.mp3 */; };
 		71B600022133E879008BBEF5 /* creativeminds.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 71B6FFFD2133E878008BBEF5 /* creativeminds.mp3 */; };
 		71B600032133E879008BBEF5 /* movie2.mov in Resources */ = {isa = PBXBuildFile; fileRef = 71B6FFFE2133E878008BBEF5 /* movie2.mov */; };
@@ -32,7 +34,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		71A53E6E21B658DA00D23315 /* AvAudioMixManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvAudioMixManager.swift; sourceTree = "<group>"; };
+		711CF71F21B8D55A00621086 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		71635C8821B775DB008C85B0 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
+		71A53E6E21B658DA00D23315 /* AVAudioMixManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAudioMixManager.swift; sourceTree = "<group>"; };
 		71B600002133E878008BBEF5 /* black.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = black.mov; sourceTree = "<group>"; };
 		71B6FFCA2133AF75008BBEF5 /* CleanCodeVideoEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanCodeVideoEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71B6FFCD2133AF75008BBEF5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -96,6 +100,8 @@
 				71B6FFD42133AF76008BBEF5 /* Assets.xcassets */,
 				71B6FFD62133AF76008BBEF5 /* LaunchScreen.storyboard */,
 				71B6FFD92133AF77008BBEF5 /* Info.plist */,
+				71635C8821B775DB008C85B0 /* PreviewViewController.swift */,
+				711CF71F21B8D55A00621086 /* TestViewController.swift */,
 			);
 			path = CleanCodeVideoEditor;
 			sourceTree = "<group>";
@@ -130,7 +136,7 @@
 				71B6FFE82133B92C008BBEF5 /* SplitVideoManager.swift */,
 				71B6FFEF2133D31E008BBEF5 /* MergeVideoToVideoManager.swift */,
 				71B6FFF32133D902008BBEF5 /* MergeVideoWithTextVideoManager.swift */,
-				71A53E6E21B658DA00D23315 /* AvAudioMixManager.swift */,
+				71A53E6E21B658DA00D23315 /* AVAudioMixManager.swift */,
 			);
 			path = Funtionalities;
 			sourceTree = "<group>";
@@ -225,17 +231,19 @@
 			files = (
 				71B6FFF22133D643008BBEF5 /* MergeVideoWithMusicVideoManager.swift in Sources */,
 				71B6FFE12133AFA0008BBEF5 /* OutputVideoManagable.swift in Sources */,
+				711CF72021B8D55A00621086 /* TestViewController.swift in Sources */,
 				71B6FFE92133B92C008BBEF5 /* SplitVideoManager.swift in Sources */,
 				71B6FFED2133C67E008BBEF5 /* MergeInforConfiguration.swift in Sources */,
 				71B6FFF42133D902008BBEF5 /* MergeVideoWithTextVideoManager.swift in Sources */,
 				71B6FFE52133B04D008BBEF5 /* FileManager+Extension.swift in Sources */,
 				71B6FFD02133AF75008BBEF5 /* ViewController.swift in Sources */,
 				71B6FFE32133AFD2008BBEF5 /* BaseVideoManager.swift in Sources */,
+				71635C8921B775DB008C85B0 /* PreviewViewController.swift in Sources */,
 				71B6FFF02133D31E008BBEF5 /* MergeVideoToVideoManager.swift in Sources */,
 				71B6FFF82133DA19008BBEF5 /* MakeTextLayerable.swift in Sources */,
 				71B6FFCE2133AF75008BBEF5 /* AppDelegate.swift in Sources */,
 				71B6FFE72133B23A008BBEF5 /* VideoCompositionInstruction.swift in Sources */,
-				71A53E6F21B658DA00D23315 /* AvAudioMixManager.swift in Sources */,
+				71A53E6F21B658DA00D23315 /* AVAudioMixManager.swift in Sources */,
 				71B6FFF62133D9B2008BBEF5 /* CXETextLayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
