@@ -1,8 +1,8 @@
 //
-//  TestViewController.swift
+//  ExTestViewController.swift
 //  CleanCodeVideoEditor
 //
-//  Created by seyha on 6/12/18.
+//  Created by seyha on 11/12/18.
 //  Copyright © 2018 seyha. All rights reserved.
 //
 
@@ -10,17 +10,8 @@ import UIKit
 import AVFoundation
 import Photos
 
-class TestViewController: UINavigationController {
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        implmentWholeProcessStep1()
-    }
-    
-    
-    
-    func implmentWholeProcessStep1() {
+extension TestViewController {
+    func implmentWholeProcessStep2() {
         
         // Create composition and video track, audio track in to composition
         let mutableComposition = AVMutableComposition()
@@ -85,26 +76,24 @@ class TestViewController: UINavigationController {
         
         
         // Applying the Video Composition Instructions
-        let firstVideoCompositionInstruction = AVMutableVideoCompositionInstruction()
-        firstVideoCompositionInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, firstVideoAssetTrack.timeRange.duration)
+        let videoCompositionInstruction = AVMutableVideoCompositionInstruction()
+        videoCompositionInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeAdd(firstVideoAssetTrack.timeRange.duration, secondVideoAssertTrack.timeRange.duration))
         
-        
-        let secondVideoCompositionInstruction = AVMutableVideoCompositionInstruction()
-        secondVideoCompositionInstruction.timeRange = CMTimeRangeMake(firstVideoAssetTrack.timeRange.duration, CMTimeAdd(firstVideoAssetTrack.timeRange.duration, secondVideoAssertTrack.timeRange.duration))
         
         // create Video composition layer
         let firstVideoCompositionLayer = AVMutableVideoCompositionLayerInstruction(assetTrack: videoCompositionTrack!)
-        firstVideoCompositionInstruction.layerInstructions = [firstVideoCompositionLayer]
+        //        videoCompositionInstruction.layerInstructions = [firstVideoCompositionLayer]
         
         let secondVideoCompositionLayer = AVMutableVideoCompositionLayerInstruction(assetTrack: videoCompositionTrack!)
-        secondVideoCompositionInstruction.layerInstructions = [secondVideoCompositionLayer]
+        //        secondVideoCompositionInstruction.layerInstructions = [secondVideoCompositionLayer]
         
+        videoCompositionInstruction.layerInstructions = [firstVideoCompositionLayer, secondVideoCompositionLayer]
         
         firstVideoCompositionLayer.setTransform(firstTransform, at: kCMTimeZero)
         secondVideoCompositionLayer.setTransform(secondTransform, at: firstVideoAssetTrack.timeRange.duration)
         
         let mutableVideoComposition = AVMutableVideoComposition()
-        mutableVideoComposition.instructions = [firstVideoCompositionInstruction, secondVideoCompositionInstruction]
+        mutableVideoComposition.instructions = [videoCompositionInstruction]
         
         
         //Setting the Render Size and Frame Duration
@@ -113,7 +102,7 @@ class TestViewController: UINavigationController {
         
         if firstVideoPortrait {
             firstNaturalSize = CGSize(width: firstVideoAssetTrack.naturalSize.height, height: firstVideoAssetTrack.naturalSize.width)
-             secondNaturalSize = CGSize(width: secondVideoAssertTrack.naturalSize.height, height: secondVideoAssertTrack.naturalSize.width)
+            secondNaturalSize = CGSize(width: secondVideoAssertTrack.naturalSize.height, height: secondVideoAssertTrack.naturalSize.width)
         } else {
             firstNaturalSize = firstVideoAssetTrack.naturalSize
             secondNaturalSize = secondVideoAssertTrack.naturalSize
@@ -137,7 +126,7 @@ class TestViewController: UINavigationController {
         }
         
         mutableVideoComposition.renderSize = CGSize(width: renderWidth, height: renderHeight)
-        mutableVideoComposition.frameDuration = CMTimeMake(1,30)
+        mutableVideoComposition.frameDuration = CMTimeMake(30,1)
         
         
         // Exporting the Composition and Saving it to the Camera Roll
@@ -152,7 +141,7 @@ class TestViewController: UINavigationController {
         let path =  try! FileManager.default.url(for: .documentDirectory, in: .allDomainsMask, appropriateFor: nil, create: true).appendingPathComponent("\(dateString)").appendingPathExtension("mp4")
         
         
-       
+        
         // Remove file if existed
         FileManager.default.removeItemIfExisted(path)
         
@@ -166,107 +155,22 @@ class TestViewController: UINavigationController {
         exporter?.exportAsynchronously(completionHandler: {
             if exporter?.status == AVAssetExportSessionStatus.completed {
                 print("url \(path)")
+                DispatchQueue.main.async {
                     PHPhotoLibrary.shared().performChanges({
                         PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: path)
                     }) { saved, error in
-                         DispatchQueue.main.async {
-                            if saved {
-                                let alertController = UIAlertController(title: "Your video was successfully saved", message: nil, preferredStyle: .alert)
-                                let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-                                alertController.addAction(defaultAction)
-                                self.present(alertController, animated: true, completion: nil)
-                            }
+                        if saved {
+                            let alertController = UIAlertController(title: "Your video was successfully saved", message: nil, preferredStyle: .alert)
+                            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                            alertController.addAction(defaultAction)
+                            self.present(alertController, animated: true, completion: nil)
                         }
                     }
-//                }
+                }
                 
             }
         })
         
         
     }
-    
-    
-    func InCorperating_Core_Animation() {
-        let waterMark = CALayer()
-        waterMark.backgroundColor = UIColor.red.cgColor
-    }
-    
-    func step() {
-        
-        // Create Composition
-        let mutableComposition = AVMutableComposition()
-        
-        // create video track
-        let mutableCompositionVideoTrack = mutableComposition.addMutableTrack(withMediaType: AVMediaType.video, preferredTrackID: kCMPersistentTrackID_Invalid)
-        
-        
-        // create audio track
-        let mutableCompositionAudioTrack = mutableComposition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: kCMPersistentTrackID_Invalid)
-        
-        // Load video asset
-        let videoUrl = Bundle.main.url(forResource: "movie1", withExtension: "mov")
-        let videoAsset = AVAsset(url: videoUrl!)
-        
-        let anotherVideoUrl = Bundle.main.url(forResource: "movie2", withExtension: "mov")
-        let anotherVideoAsset = AVAsset(url: anotherVideoUrl!)
-        
-        // Get track from video
-        let videoTrack = videoAsset.tracks(withMediaType: AVMediaType.video).first!
-        let anotherVideoTrack = anotherVideoAsset.tracks(withMediaType: AVMediaType.video).first!
-        
-        let videoTrackTimeRange = CMTimeRangeMake(kCMTimeZero, videoTrack.timeRange.duration)
-        let anotherVideoTrackTimeRange = CMTimeRangeMake(kCMTimeZero, anotherVideoTrack.timeRange.duration)
-        
-        try! mutableCompositionVideoTrack?.insertTimeRange(videoTrackTimeRange, of: videoTrack, at: kCMTimeZero)
-        try! mutableCompositionVideoTrack?.insertTimeRange(anotherVideoTrackTimeRange, of: anotherVideoTrack, at: videoTrack.timeRange.duration)
-        
-        
-        // Create audioMix
-        let mutableAudioMix = AVMutableAudioMix()
-        let mixParamters = AVMutableAudioMixInputParameters()
-        let audioTimeRange = CMTimeRangeMake(kCMTimeZero, mutableComposition.duration)
-        mixParamters.setVolumeRamp(fromStartVolume: 1.0, toEndVolume: 0.0, timeRange:audioTimeRange)
-        mutableAudioMix.inputParameters = [mixParamters]
-        
-        
-        // Create changable compositon by using videocompositioninstruction
-        let mutableVideoCompositionInstruction = AVMutableVideoCompositionInstruction()
-        mutableVideoCompositionInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, mutableComposition.duration)
-        mutableVideoCompositionInstruction.backgroundColor = UIColor.red.cgColor
-        
-        
-        // Apply Opacity Ramp by using video compositionlayerinstruction
-        // Get track from video
-        let firstVideoCompositionInstruction = AVMutableVideoCompositionInstruction()
-        firstVideoCompositionInstruction.timeRange = videoTrackTimeRange
-        
-        
-        
-        let secondVideoCompositionInstruction = AVMutableVideoCompositionInstruction()
-        let addTwoVideoCMTime = CMTimeAdd(videoTrack.timeRange.duration, anotherVideoTrack.timeRange.duration)
-        secondVideoCompositionInstruction.timeRange = CMTimeRangeMake(videoTrack.timeRange.duration, addTwoVideoCMTime)
-        
-        //create layer
-        let firstVideoLayerInstruction = AVMutableVideoCompositionLayerInstruction()
-        firstVideoLayerInstruction.setOpacityRamp(fromStartOpacity: 1.0, toEndOpacity: 0.0, timeRange: videoTrackTimeRange)
-        
-        let secondVideoLayerInstruction = AVMutableVideoCompositionLayerInstruction()
-        
-        // add to layer instruction to composition instruction
-        firstVideoCompositionInstruction.layerInstructions = [firstVideoLayerInstruction]
-        secondVideoCompositionInstruction.layerInstructions = [secondVideoLayerInstruction]
-        
-        // Fake video composition
-        let mutableVideoComposition = AVMutableVideoComposition()
-        mutableVideoComposition.instructions = [firstVideoCompositionInstruction, secondVideoCompositionInstruction]
-        
-        
-        
-    }
-    
-    
-    
-    
-    
 }
