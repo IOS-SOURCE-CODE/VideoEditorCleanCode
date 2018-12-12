@@ -15,7 +15,7 @@ class TestViewController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        implmentWholeProcessStep1()
+        implmentWholeProcessStep2()
     }
     
     
@@ -40,7 +40,7 @@ class TestViewController: UINavigationController {
         
         // Add loaded track from video asset to video composition track
         let firstVideoTimeRange = CMTimeRangeMake(kCMTimeZero, firstVideoAssetTrack.timeRange.duration)
-        let secondVideoTimeRange = CMTimeRangeMake(kCMTimeZero, firstVideoAssetTrack.timeRange.duration)
+        let secondVideoTimeRange = CMTimeRangeMake(kCMTimeZero,secondVideoAssertTrack.timeRange.duration)
         try! videoCompositionTrack?.insertTimeRange(firstVideoTimeRange, of: firstVideoAssetTrack, at: kCMTimeZero)
         try! videoCompositionTrack?.insertTimeRange(secondVideoTimeRange, of: secondVideoAssertTrack, at: firstVideoAssetTrack.timeRange.duration)
         
@@ -94,9 +94,31 @@ class TestViewController: UINavigationController {
         
         // create Video composition layer
         let firstVideoCompositionLayer = AVMutableVideoCompositionLayerInstruction(assetTrack: videoCompositionTrack!)
+        
+         // Animation Opacity
+        let endTime = CMTimeAdd(kCMTimeZero, firstVideoAsset.duration)
+        let timeScale = firstVideoAsset.duration.timescale
+        let durationAnimation = CMTime.init(seconds: 1, preferredTimescale: timeScale)
+        let durationAnimationTimeRange = CMTimeRange.init(start: endTime, duration: durationAnimation)
+        
+        
+        firstVideoCompositionLayer.setOpacityRamp(fromStartOpacity: 1.0, toEndOpacity: 0.0, timeRange: durationAnimationTimeRange)
+       
         firstVideoCompositionInstruction.layerInstructions = [firstVideoCompositionLayer]
         
         let secondVideoCompositionLayer = AVMutableVideoCompositionLayerInstruction(assetTrack: videoCompositionTrack!)
+        
+        // Animation Opacity
+        let endTime2 = CMTimeAdd(firstVideoAsset.duration, secondVideoAsset.duration)
+        let timeScale2 = secondVideoAsset.duration.timescale
+        let durationAnimation2 = CMTime(seconds: 1, preferredTimescale: timeScale2)
+         let durationAnimationTimeRange2 = CMTimeRange.init(start: endTime2, duration: durationAnimation2)
+        
+          secondVideoCompositionLayer.setOpacityRamp(fromStartOpacity: 0.0, toEndOpacity: 1.0, timeRange: durationAnimationTimeRange2)
+        
+//        secondVideoCompositionLayer.setOpacity(0.0, at: endTime)
+        
+        
         secondVideoCompositionInstruction.layerInstructions = [secondVideoCompositionLayer]
         
         
@@ -106,6 +128,8 @@ class TestViewController: UINavigationController {
         let mutableVideoComposition = AVMutableVideoComposition()
         mutableVideoComposition.instructions = [firstVideoCompositionInstruction, secondVideoCompositionInstruction]
         
+        
+       
         
         //Setting the Render Size and Frame Duration
         var firstNaturalSize: CGSize!
@@ -138,6 +162,20 @@ class TestViewController: UINavigationController {
         
         mutableVideoComposition.renderSize = CGSize(width: renderWidth, height: renderHeight)
         mutableVideoComposition.frameDuration = CMTimeMake(1,30)
+        
+        
+        // Animation Layer
+        // Init Video layer
+        let videoLayer = CALayer()
+        videoLayer.frame = CGRect.init(x: 0, y: 0, width: renderWidth, height: renderHeight)
+        
+        let parentlayer = CALayer()
+        parentlayer.frame = CGRect.init(x: 0, y: 0, width: renderWidth, height: renderHeight)
+        
+        parentlayer.addSublayer(videoLayer)
+        
+        mutableVideoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentlayer)
+        
         
         
         // Exporting the Composition and Saving it to the Camera Roll

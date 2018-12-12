@@ -10,12 +10,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CleanCodeVideoEditor/TestViewController.swift"
-            timestampString = "566205060.012069"
+            timestampString = "566274392.306178"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "168"
-            endingLineNumber = "168"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
             landmarkName = "implmentWholeProcessStep1()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CleanCodeVideoEditor/ExTestViewController.swift"
+            timestampString = "566274392.306666"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
+            landmarkName = "implmentWholeProcessStep2()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

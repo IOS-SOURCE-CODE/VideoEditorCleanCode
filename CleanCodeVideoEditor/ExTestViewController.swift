@@ -16,6 +16,7 @@ extension TestViewController {
         // Create composition and video track, audio track in to composition
         let mutableComposition = AVMutableComposition()
         let videoCompositionTrack = mutableComposition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)
+        let secondVideoCompositionTrack = mutableComposition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)
         let audioCompositionTrack = mutableComposition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
         
         // Load video asset
@@ -31,9 +32,9 @@ extension TestViewController {
         
         // Add loaded track from video asset to video composition track
         let firstVideoTimeRange = CMTimeRangeMake(kCMTimeZero, firstVideoAssetTrack.timeRange.duration)
-        let secondVideoTimeRange = CMTimeRangeMake(kCMTimeZero, firstVideoAssetTrack.timeRange.duration)
+        let secondVideoTimeRange = CMTimeRangeMake(kCMTimeZero,secondVideoAssertTrack.timeRange.duration)
         try! videoCompositionTrack?.insertTimeRange(firstVideoTimeRange, of: firstVideoAssetTrack, at: kCMTimeZero)
-        try! videoCompositionTrack?.insertTimeRange(secondVideoTimeRange, of: secondVideoAssertTrack, at: firstVideoAssetTrack.timeRange.duration)
+        try! secondVideoCompositionTrack?.insertTimeRange(secondVideoTimeRange, of: secondVideoAssertTrack, at: firstVideoAssetTrack.timeRange.duration)
         
         // Load audio
         let urlMusic = Bundle.main.url(forResource: "creativeminds", withExtension: "mp3")
@@ -79,23 +80,30 @@ extension TestViewController {
         let videoCompositionInstruction = AVMutableVideoCompositionInstruction()
         videoCompositionInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeAdd(firstVideoAssetTrack.timeRange.duration, secondVideoAssertTrack.timeRange.duration))
         
-        
         // create Video composition layer
         let firstVideoCompositionLayer = AVMutableVideoCompositionLayerInstruction(assetTrack: videoCompositionTrack!)
-        //        videoCompositionInstruction.layerInstructions = [firstVideoCompositionLayer]
-        
-        let secondVideoCompositionLayer = AVMutableVideoCompositionLayerInstruction(assetTrack: videoCompositionTrack!)
-        //        secondVideoCompositionInstruction.layerInstructions = [secondVideoCompositionLayer]
-        
-        videoCompositionInstruction.layerInstructions = [firstVideoCompositionLayer, secondVideoCompositionLayer]
+        let secondVideoCompositionLayer = AVMutableVideoCompositionLayerInstruction(assetTrack: secondVideoCompositionTrack!)
         
         firstVideoCompositionLayer.setTransform(firstTransform, at: kCMTimeZero)
         secondVideoCompositionLayer.setTransform(secondTransform, at: firstVideoAssetTrack.timeRange.duration)
         
-        let mutableVideoComposition = AVMutableVideoComposition()
-        mutableVideoComposition.instructions = [videoCompositionInstruction]
+        // Animation Opacity
+        let endTime = CMTimeAdd(kCMTimeZero, firstVideoAsset.duration)
+        let timeScale = firstVideoAsset.duration.timescale
+        let durationAnimation = CMTime(seconds: 1, preferredTimescale: timeScale)
+        let durationAnimationTimeRange = CMTimeRange(start: endTime, duration: durationAnimation)
         
+        firstVideoCompositionLayer.setOpacityRamp(fromStartOpacity: 1.0, toEndOpacity: 0.0, timeRange: durationAnimationTimeRange)
         
+        let endTime2 = CMTimeAdd(firstVideoAsset.duration, secondVideoAsset.duration)
+        let timeScale2 = secondVideoAsset.duration.timescale
+        let durationAnimation2 = CMTime(seconds: 1, preferredTimescale: timeScale2)
+        let durationAnimationTimeRange2 = CMTimeRange(start: endTime2, duration: durationAnimation2)
+        
+        secondVideoCompositionLayer.setOpacityRamp(fromStartOpacity: 1.0, toEndOpacity: 0.0, timeRange: durationAnimationTimeRange2)
+        
+        videoCompositionInstruction.layerInstructions = [firstVideoCompositionLayer, secondVideoCompositionLayer]
+       
         //Setting the Render Size and Frame Duration
         var firstNaturalSize: CGSize!
         var secondNaturalSize: CGSize!
@@ -125,10 +133,6 @@ extension TestViewController {
             renderHeight = secondNaturalSize.height
         }
         
-        mutableVideoComposition.renderSize = CGSize(width: renderWidth, height: renderHeight)
-        mutableVideoComposition.frameDuration = CMTimeMake(30,1)
-        
-        
         // Exporting the Composition and Saving it to the Camera Roll
         let kDateFormatter = DateFormatter()
         kDateFormatter.dateStyle = .medium
@@ -136,21 +140,24 @@ extension TestViewController {
         let date = Date()
         let dateString = kDateFormatter.string(from: date)
         
-        
         // Export to file
         let path =  try! FileManager.default.url(for: .documentDirectory, in: .allDomainsMask, appropriateFor: nil, create: true).appendingPathComponent("\(dateString)").appendingPathExtension("mp4")
-        
-        
         
         // Remove file if existed
         FileManager.default.removeItemIfExisted(path)
         
+        
+        let mutableVideoComposition = AVMutableVideoComposition()
+        mutableVideoComposition.instructions = [videoCompositionInstruction]
+        mutableVideoComposition.renderSize = CGSize(width: renderWidth, height: renderHeight)
+        mutableVideoComposition.frameDuration = CMTimeMake(1,30)
+       
         let exporter = AVAssetExportSession(asset: mutableComposition, presetName: AVAssetExportPresetHighestQuality)
         exporter?.outputURL = path
         exporter?.outputFileType = AVFileType.mp4
         exporter?.shouldOptimizeForNetworkUse = true
         exporter?.videoComposition = mutableVideoComposition
-        
+       
         
         exporter?.exportAsynchronously(completionHandler: {
             if exporter?.status == AVAssetExportSessionStatus.completed {
