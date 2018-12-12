@@ -10,13 +10,19 @@ import UIKit
 import AVFoundation
 import Photos
 
-extension TestViewController {
+extension TestViewController : MakeTextLayerable {
     func implmentWholeProcessStep2() {
+        
+        let imageDuration = 5.0
         
         // Create composition and video track, audio track in to composition
         let mutableComposition = AVMutableComposition()
         let videoCompositionTrack = mutableComposition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)
+        
         let secondVideoCompositionTrack = mutableComposition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)
+        
+        let blackVideoTrack = mutableComposition.addMutableTrack(withMediaType: .video,preferredTrackID: kCMPersistentTrackID_Invalid)
+        
         let audioCompositionTrack = mutableComposition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
         
         // Load video asset
@@ -26,25 +32,40 @@ extension TestViewController {
         let secondVideoUrl = Bundle.main.url(forResource: "movie2", withExtension: "mov")
         let secondVideoAsset = AVAsset(url: secondVideoUrl!)
         
+        let blackVideoUrl = Bundle.main.url(forResource: "black", withExtension: "mov")
+        let blackVideoAsset = AVAsset(url: blackVideoUrl!)
+        
         // load track from video asset
         let firstVideoAssetTrack = firstVideoAsset.tracks(withMediaType: .video).first!
         let secondVideoAssertTrack = secondVideoAsset.tracks(withMediaType: .video).first!
+        let blackVideoAssetTrack = blackVideoAsset.tracks(withMediaType: .video).first!
         
         // Add loaded track from video asset to video composition track
         let firstVideoTimeRange = CMTimeRangeMake(kCMTimeZero, firstVideoAssetTrack.timeRange.duration)
         let secondVideoTimeRange = CMTimeRangeMake(kCMTimeZero,secondVideoAssertTrack.timeRange.duration)
+
+        
+        let itemDuration = CMTime(seconds:imageDuration, preferredTimescale: blackVideoAsset.duration.timescale)
+        let blackVideoTimeRange = CMTimeRangeMake(kCMTimeZero,blackVideoAssetTrack.timeRange.duration)
+        
         try! videoCompositionTrack?.insertTimeRange(firstVideoTimeRange, of: firstVideoAssetTrack, at: kCMTimeZero)
         try! secondVideoCompositionTrack?.insertTimeRange(secondVideoTimeRange, of: secondVideoAssertTrack, at: firstVideoAssetTrack.timeRange.duration)
+        
+        let startBlackPoint = CMTimeAdd(firstVideoAssetTrack.timeRange.duration, secondVideoAssertTrack.timeRange.duration)
+        try! blackVideoTrack?.insertTimeRange(blackVideoTimeRange, of: blackVideoAssetTrack, at: startBlackPoint)
         
         // Load audio
         let urlMusic = Bundle.main.url(forResource: "creativeminds", withExtension: "mp3")
         let musicAsset = AVAsset(url: urlMusic!)
         
-        // Get auido track
+        // Get audio track
         let musicTrack = musicAsset.tracks(withMediaType: .audio).first!
         let audioDuration = CMTimeAdd(firstVideoAssetTrack.timeRange.duration, secondVideoAssertTrack.timeRange.duration)
-        let musicTimeRange = CMTimeRangeMake(kCMTimeZero, audioDuration)
+        let tempDuration = CMTimeAdd(audioDuration, blackVideoAssetTrack.timeRange.duration)
+//        let addmoreAudioDuration = CMTimeAdd(audioDuration, itemDuration)
+        let musicTimeRange = CMTimeRange(start: kCMTimeZero, duration: tempDuration)
         try! audioCompositionTrack?.insertTimeRange(musicTimeRange, of: musicTrack, at: kCMTimeZero)
+        
         
         
         // Check Video Portrail and Landscade
@@ -78,7 +99,9 @@ extension TestViewController {
         
         // Applying the Video Composition Instructions
         let videoCompositionInstruction = AVMutableVideoCompositionInstruction()
-        videoCompositionInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeAdd(firstVideoAssetTrack.timeRange.duration, secondVideoAssertTrack.timeRange.duration))
+        let tempTwo = CMTimeAdd(firstVideoAssetTrack.timeRange.duration, secondVideoAssertTrack.timeRange.duration)
+        let tempThree = CMTimeAdd(tempTwo, blackVideoAssetTrack.timeRange.duration)
+        videoCompositionInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, tempThree)
         
         // create Video composition layer
         let firstVideoCompositionLayer = AVMutableVideoCompositionLayerInstruction(assetTrack: videoCompositionTrack!)
@@ -147,10 +170,100 @@ extension TestViewController {
         FileManager.default.removeItemIfExisted(path)
         
         
+        
+        
+        // Image with bgvideo
+        let insertTime = CMTimeAdd(firstVideoAssetTrack.timeRange.duration, secondVideoAssertTrack.timeRange.duration)
+        
+        
+        // Create Image layer
+        guard let image = UIImage(named: "n1") else { fatalError() }
+        let outputSize = CGSize(width: renderWidth, height: renderHeight)
+        let imageLayer = CALayer()
+        imageLayer.frame = CGRect(origin: CGPoint.zero, size: outputSize)
+        imageLayer.contents = image.cgImage
+        imageLayer.opacity = 0
+        imageLayer.contentsGravity = kCAGravityResizeAspectFill
+        
+        setOrientation(image: image, onLayer: imageLayer, outputSize: outputSize)
+        
+        // Add Fade in & Fade out animation
+        let fadeInAnimation = CABasicAnimation(keyPath: "opacity")
+        fadeInAnimation.duration = 1
+        fadeInAnimation.fromValue = NSNumber(value: 0)
+        fadeInAnimation.toValue = NSNumber(value: 1)
+        fadeInAnimation.isRemovedOnCompletion = false
+        fadeInAnimation.beginTime = insertTime.seconds
+        fadeInAnimation.fillMode = kCAFillModeForwards
+        imageLayer.add(fadeInAnimation, forKey: "opacityIN")
+        
+        let fadeOutAnimation = CABasicAnimation.init(keyPath: "opacity")
+        fadeOutAnimation.duration = 1
+        fadeOutAnimation.fromValue = NSNumber(value: 1)
+        fadeOutAnimation.toValue = NSNumber(value: 0)
+        fadeOutAnimation.isRemovedOnCompletion = false
+        fadeOutAnimation.beginTime = CMTimeAdd(insertTime, itemDuration).seconds
+        fadeOutAnimation.fillMode = kCAFillModeForwards
+        imageLayer.add(fadeOutAnimation, forKey: "opacityOUT")
+        
+        
+       
+        
+        let parentlayer = CALayer()
+        parentlayer.frame = CGRect(x: 0, y: 0, width: renderWidth, height: renderHeight)
+        
+        let videoLayer = CALayer()
+        videoLayer.frame = CGRect(x: 0, y: 0, width: renderWidth, height: renderHeight)
+        parentlayer.addSublayer(videoLayer)
+        
+        parentlayer.addSublayer(imageLayer)
+        
+        
+        // Add Three Texts
+        
+        let firstTextData = TextInfos()
+        firstTextData.text = "First Video"
+        firstTextData.textColor = UIColor.white
+        firstTextData.showTime = 1.0
+        firstTextData.endTime = firstVideoAssetTrack.timeRange.duration.seconds
+        firstTextData.textFrame = CGRect(x: 10, y: 10, width: 400, height: 300)
+        
+        let firstVideoText = makeTextLayers(string: firstTextData.text, fontSize: 50, textColor: firstTextData.textColor, frame:  firstTextData.textFrame, showTime:  firstTextData.showTime, hideTime:  firstTextData.endTime)
+        
+        
+        
+        let secondTextData = TextInfos()
+        secondTextData.text = "Second Video"
+        secondTextData.textColor = UIColor.white
+        secondTextData.showTime = firstVideoAssetTrack.timeRange.duration.seconds// Second
+        secondTextData.endTime =  insertTime.seconds
+        secondTextData.textFrame = CGRect(x: 10, y: 10, width: 400, height: 300)
+
+        let secondVideoText = makeTextLayers(string: secondTextData.text, fontSize: 50, textColor: secondTextData.textColor, frame:  secondTextData.textFrame, showTime:  secondTextData.showTime, hideTime:  secondTextData.endTime )
+//
+//
+//
+        let threeTextData = TextInfos()
+        threeTextData.text = "Three Video"
+        threeTextData.textColor = UIColor.white
+        threeTextData.showTime = insertTime.seconds// Second
+        threeTextData.endTime =  CMTimeAdd(insertTime, itemDuration).seconds
+        threeTextData.textFrame = CGRect(x: 10, y: 10, width: 400, height: 300)
+
+        let threeVideoText = makeTextLayers(string: threeTextData.text, fontSize: 50, textColor: threeTextData.textColor, frame:  threeTextData.textFrame, showTime:  threeTextData.showTime, hideTime:  threeTextData.endTime )
+        
+        
+        parentlayer.addSublayer(firstVideoText)
+        parentlayer.addSublayer(secondVideoText)
+        parentlayer.addSublayer(threeVideoText)
+        
+       
         let mutableVideoComposition = AVMutableVideoComposition()
         mutableVideoComposition.instructions = [videoCompositionInstruction]
         mutableVideoComposition.renderSize = CGSize(width: renderWidth, height: renderHeight)
         mutableVideoComposition.frameDuration = CMTimeMake(1,30)
+        
+         mutableVideoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentlayer)
        
         let exporter = AVAssetExportSession(asset: mutableComposition, presetName: AVAssetExportPresetHighestQuality)
         exporter?.outputURL = path
@@ -160,7 +273,9 @@ extension TestViewController {
        
         
         exporter?.exportAsynchronously(completionHandler: {
-            if exporter?.status == AVAssetExportSessionStatus.completed {
+            
+            switch exporter!.status {
+            case .completed:
                 print("url \(path)")
                 DispatchQueue.main.async {
                     PHPhotoLibrary.shared().performChanges({
@@ -174,10 +289,48 @@ extension TestViewController {
                         }
                     }
                 }
+            case .failed:
+                print("error failed")
                 
+            case .exporting:
+                print("exporting")
+                
+            case .cancelled:
+                print("cancelled")
+                
+            case .waiting:
+                print("waiting")
+                
+            default:
+                print("unknow error")
             }
+            
+            
         })
         
         
     }
+    
+    
+    
+    func setOrientation(image:UIImage?, onLayer:CALayer, outputSize:CGSize) -> Void {
+        guard let image = image else { return }
+        
+        if image.imageOrientation == UIImageOrientation.up {
+            // Do nothing
+        }
+        else if image.imageOrientation == UIImageOrientation.left {
+            let rotate = CGAffineTransform(rotationAngle: .pi/2)
+            onLayer.setAffineTransform(rotate)
+        }
+        else if image.imageOrientation == UIImageOrientation.down {
+            let rotate = CGAffineTransform(rotationAngle: .pi)
+            onLayer.setAffineTransform(rotate)
+        }
+        else if image.imageOrientation == UIImageOrientation.right {
+            let rotate = CGAffineTransform(rotationAngle: -.pi/2)
+            onLayer.setAffineTransform(rotate)
+        }
+    }
 }
+
