@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CleanCodeVideoEditor/TestViewController.swift"
-            timestampString = "566295033.332333"
+            timestampString = "566296162.87514"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "206"
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CleanCodeVideoEditor/ExTestViewController.swift"
-            timestampString = "566295033.332425"
+            timestampString = "566296162.8752609"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "277"
-            endingLineNumber = "277"
+            startingLineNumber = "293"
+            endingLineNumber = "293"
             landmarkName = "implmentWholeProcessStep2()"
             landmarkType = "7">
          </BreakpointContent>

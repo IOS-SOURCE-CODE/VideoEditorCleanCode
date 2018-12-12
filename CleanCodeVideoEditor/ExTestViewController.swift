@@ -253,9 +253,25 @@ extension TestViewController : MakeTextLayerable {
         let threeVideoText = makeTextLayers(string: threeTextData.text, fontSize: 50, textColor: threeTextData.textColor, frame:  threeTextData.textFrame, showTime:  threeTextData.showTime, hideTime:  threeTextData.endTime )
         
         
+        
         parentlayer.addSublayer(firstVideoText)
         parentlayer.addSublayer(secondVideoText)
         parentlayer.addSublayer(threeVideoText)
+        
+        // Add Watermark
+        guard let waterMarkImage = UIImage(named: "watermark") else { fatalError() }
+        let waterMarkOutputSize = CGSize(width: 50, height: 50)
+        let waterMarkImageLayer = CALayer()
+        let waterMarkPosition = CGPoint(x: renderWidth - 70, y: 20)
+        waterMarkImageLayer.frame = CGRect(origin: waterMarkPosition, size: waterMarkOutputSize)
+        waterMarkImageLayer.contents = waterMarkImage.cgImage
+        waterMarkImageLayer.opacity = 1
+        waterMarkImageLayer.contentsGravity = kCAGravityResizeAspectFill
+        waterMarkImageLayer.cornerRadius = 25
+       
+      
+        
+        parentlayer.addSublayer(waterMarkImageLayer)
         
        
         let mutableVideoComposition = AVMutableVideoComposition()
