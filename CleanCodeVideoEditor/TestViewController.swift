@@ -116,8 +116,6 @@ class TestViewController: UINavigationController {
         
           secondVideoCompositionLayer.setOpacityRamp(fromStartOpacity: 0.0, toEndOpacity: 1.0, timeRange: durationAnimationTimeRange2)
         
-//        secondVideoCompositionLayer.setOpacity(0.0, at: endTime)
-        
         
         secondVideoCompositionInstruction.layerInstructions = [secondVideoCompositionLayer]
         

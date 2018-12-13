@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		711CF72021B8D55A00621086 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711CF71F21B8D55A00621086 /* TestViewController.swift */; };
 		712E37F121BF9964005CFE29 /* ExTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712E37F021BF9964005CFE29 /* ExTestViewController.swift */; };
+		7137D61321C2073D00C8C7A2 /* TrimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7137D61221C2073D00C8C7A2 /* TrimViewController.swift */; };
 		71635C8921B775DB008C85B0 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71635C8821B775DB008C85B0 /* PreviewViewController.swift */; };
 		71A53E6F21B658DA00D23315 /* AVAudioMixManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A53E6E21B658DA00D23315 /* AVAudioMixManager.swift */; };
 		71B600012133E879008BBEF5 /* silence.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 71B6FFFC2133E878008BBEF5 /* silence.mp3 */; };
@@ -37,6 +38,7 @@
 /* Begin PBXFileReference section */
 		711CF71F21B8D55A00621086 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		712E37F021BF9964005CFE29 /* ExTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExTestViewController.swift; sourceTree = "<group>"; };
+		7137D61221C2073D00C8C7A2 /* TrimViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimViewController.swift; sourceTree = "<group>"; };
 		71635C8821B775DB008C85B0 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		71A53E6E21B658DA00D23315 /* AVAudioMixManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAudioMixManager.swift; sourceTree = "<group>"; };
 		71B600002133E878008BBEF5 /* black.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = black.mov; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				71635C8821B775DB008C85B0 /* PreviewViewController.swift */,
 				711CF71F21B8D55A00621086 /* TestViewController.swift */,
 				712E37F021BF9964005CFE29 /* ExTestViewController.swift */,
+				7137D61221C2073D00C8C7A2 /* TrimViewController.swift */,
 			);
 			path = CleanCodeVideoEditor;
 			sourceTree = "<group>";
@@ -236,6 +239,7 @@
 				71B6FFF22133D643008BBEF5 /* MergeVideoWithMusicVideoManager.swift in Sources */,
 				71B6FFE12133AFA0008BBEF5 /* OutputVideoManagable.swift in Sources */,
 				711CF72021B8D55A00621086 /* TestViewController.swift in Sources */,
+				7137D61321C2073D00C8C7A2 /* TrimViewController.swift in Sources */,
 				71B6FFE92133B92C008BBEF5 /* SplitVideoManager.swift in Sources */,
 				71B6FFED2133C67E008BBEF5 /* MergeInforConfiguration.swift in Sources */,
 				71B6FFF42133D902008BBEF5 /* MergeVideoWithTextVideoManager.swift in Sources */,
